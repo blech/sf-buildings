@@ -1,21 +1,22 @@
 #!/usr/bin/python
-# splits a shapefile into a 5x5 grid of TopoJSON files
+# splits a shapefile into a 6x6 grid of TopoJSON files
 
 # TODO pull extents automatically using ogrinfo -al -so
 #      ogrinfo -al -so bf_ll.shp | grep 'Extent'
-# TODO configure number of boxes in grid
 # CRAZY adaptive splits based on polygon count (NB I am not that clever)
 
 import subprocess
 
+squares = 6
+
 bl = (-122.514259, 37.705243)
 tr = (-122.357631, 37.831965)
 
-xinc = (tr[0]-bl[0])/6
-yinc = (tr[1]-bl[1])/6
+xinc = (tr[0]-bl[0])/squares
+yinc = (tr[1]-bl[1])/squares
 
-for x in range(0,6):
-    for y in range(0,6):
+for x in range(0,squares):
+    for y in range(0,squares):
 
         x1 = bl[0]+x*xinc
         x2 = bl[0]+(x+1)*xinc
