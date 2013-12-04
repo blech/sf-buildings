@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>SF Buildings | blech.github.io</title>
+
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
+
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://d3js.org/queue.v1.js"></script>
+    <script src="http://d3js.org/topojson.v1.min.js"></script>
+
+    <script src='//api.tiles.mapbox.com/mapbox.js/v1.5.0/mapbox.js'></script>
+    <!-- https://github.com/mlevans/leaflet-hash -->
+    <script src='leaflet-hash.js'></script>
+    <!-- https://gist.github.com/rclark/5779673 -->
+    <script src='leaflet-topojson.js'></script>
+
+    <link href='//api.tiles.mapbox.com/mapbox.js/v1.5.0/mapbox.css' rel='stylesheet' />
+
+    <style>
+        body { margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+    </style>
+</head>
+<body>
+<div id='map'></div>
+<script>
+  var map = L.mapbox.map('map', 'paulmison.map-9xcwu93y')
+    .setView([37.7463, -122.4384], 13);
+
+  var hash = new L.Hash(map);
+
+  for (var x = 0; x < 6; x++) {
+    for (var y = 0; y < 6; y++) {
+      d3.json("topojson/bf_ll-"+x+"_"+y+".topojson", function(error, topojson) {
+        console.log(topojson);
+        var polys = new L.TopoJSON(topojson);
+        polys.addTo(map);
+      });
+    }
+  }
+
+</script>
+</body>
+</html>
