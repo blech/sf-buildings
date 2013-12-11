@@ -3,44 +3,63 @@
 <head>
 <meta charset=utf-8 />
 <title>SF Buildings | blech.github.io</title>
-
+  
     <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
-
-    <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="http://d3js.org/queue.v1.js"></script>
-    <script src="http://d3js.org/topojson.v1.min.js"></script>
-
-    <script src='//api.tiles.mapbox.com/mapbox.js/v1.5.0/mapbox.js'></script>
+    <script src='//api.tiles.mapbox.com/mapbox.js/v1.5.1/mapbox.js'></script>
+    <link href='//api.tiles.mapbox.com/mapbox.js/v1.5.1/mapbox.css' rel='stylesheet' />
+    
     <!-- https://github.com/mlevans/leaflet-hash -->
     <script src='leaflet-hash.js'></script>
-    <!-- https://gist.github.com/rclark/5779673 -->
-    <script src='leaflet-topojson.js'></script>
-
-    <link href='//api.tiles.mapbox.com/mapbox.js/v1.5.0/mapbox.css' rel='stylesheet' />
-
+    
     <style>
         body { margin:0; padding:0; }
         #map { position:absolute; top:0; bottom:0; width:100%; }
+        #map-ui form {
+            position: absolute;
+            bottom: 20px;
+            left: 10px;
+            font: normal 13px/18px 'Helvetica Neue', Helvetica, sans-serif;
+            background: #FFF;
+            color: #3C4E5A;
+            display: block;
+            margin: 0;
+            border: 1px solid #999;
+            border-bottom-width: 0;
+            min-width: 138px;
+            padding: 10px;
+            text-decoration: none;
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
-<div id='map'></div>
-<script>
-  var map = L.mapbox.map('map', 'paulmison.map-9xcwu93y')
-    .setView([37.7463, -122.4384], 13);
-
-  var hash = new L.Hash(map);
-
-  for (var x = 0; x < 6; x++) {
-    for (var y = 0; y < 6; y++) {
-      d3.json("topojson/bf_ll-"+x+"_"+y+".topojson", function(error, topojson) {
-        console.log(topojson);
-        var polys = new L.TopoJSON(topojson);
-        polys.addTo(map);
-      });
-    }
-  }
-
-</script>
+    <div id='map'></div>
+    <div id='map-ui'>
+        <form>
+            <input type='checkbox' checked='checked' id='toggle-buildings'>
+            <label for='toggle-buildings'>Show Buildings</label>
+        </form>
+    </div>
+    <script>
+        var map = L.mapbox.map('map', 'paulmison.map-9xcwu93y', {minZoom:13, maxZoom: 17})
+                          .setView([37.7463, -122.4384], 13)
+                          .setMaxBounds([[37.68, -122.35], [37.85, -122.53]]);
+        var ui = document.getElementById('map-ui');
+        var hash = new L.Hash(map);
+            
+        var buildings = L.mapbox.tileLayer('paulmison.fuz3erk9');
+        buildings.setZIndex(2).addTo(map);
+        
+        toggle = document.getElementById('toggle-buildings')
+        toggle.onchange = function() {
+            layer = L.mapbox.tileLayer('paulmison.fuz3erk9')
+        
+            if (map.hasLayer(buildings)) {
+                map.removeLayer(buildings);
+            } else {
+                map.addLayer(buildings);
+            }
+        }
+    </script>
 </body>
 </html>
