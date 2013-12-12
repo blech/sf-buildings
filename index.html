@@ -83,6 +83,7 @@
             
         var buildings = L.mapbox.tileLayer('paulmison.fuz3erk9');
         buildings.setZIndex(2).addTo(map);
+        buildings.setOpacity(0.75); // TODO add slider
         
         toggle = document.getElementById('toggle-buildings')
         toggle.onchange = function() {
