@@ -13,10 +13,29 @@
     
     <style>
         body { margin:0; padding:0; }
+        h1 {
+            font: bold 26px/26px 'Helvetica Neue', Helvetica, sans-serif;
+        }
+
         #map { position:absolute; top:0; bottom:0; width:100%; }
         #map-ui form {
             position: absolute;
-            bottom: 20px;
+            top: 10px;
+            left: 48px;
+            font: normal 13px/18px 'Helvetica Neue', Helvetica, sans-serif;
+            background: #FFF;
+            color: #3C4E5A;
+            display: block;
+            margin: 0;
+            border: 1px solid #999;
+            min-width: 138px;
+            padding: 10px;
+            text-decoration: none;
+            z-index: 10;
+        }
+        div#map-info {
+            position: absolute;
+            bottom: 10px;
             left: 10px;
             font: normal 13px/18px 'Helvetica Neue', Helvetica, sans-serif;
             background: #FFF;
@@ -24,8 +43,8 @@
             display: block;
             margin: 0;
             border: 1px solid #999;
-            border-bottom-width: 0;
             min-width: 138px;
+            max-width: 250px;
             padding: 10px;
             text-decoration: none;
             z-index: 10;
@@ -40,7 +59,22 @@
             <label for='toggle-buildings'>Show Buildings</label>
         </form>
     </div>
+    <div id='map-info'>
+        <h1>What is this?</h1>
+        <p>This page shows a small map overlaying a rendering of the 
+           <a href="https://data.sfgov.org/">San Francisco Data</a> 
+           <a href="https://data.sfgov.org/Facilities-and-Structures/Building-Footprints-Zipped-Shapefile-Format-/jezr-5bxm">building footprint shapefile</a>
+           on a more readily accessible map.</p>
+        <p>For more information, see <a href="https://github.com/blech/sf-buildings">the project on GitHub</a>.</p>
+        <p style="text-align: right;"><a href="#" onclick="close_info()">Close  this overlay</a></p>
+    </div>
     <script>
+        function close_info() {
+            mi = document.getElementById('map-info');
+            mi.style.visibility = "hidden";
+            return false;
+        }
+    
         var map = L.mapbox.map('map', 'paulmison.map-9xcwu93y', {minZoom:13, maxZoom: 17})
                           .setView([37.7463, -122.4384], 13)
                           .setMaxBounds([[37.68, -122.35], [37.85, -122.53]]);
@@ -49,6 +83,7 @@
             
         var buildings = L.mapbox.tileLayer('paulmison.fuz3erk9');
         buildings.setZIndex(2).addTo(map);
+        buildings.setOpacity(0.75); // TODO add slider
         
         toggle = document.getElementById('toggle-buildings')
         toggle.onchange = function() {
