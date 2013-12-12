@@ -24,7 +24,21 @@
             display: block;
             margin: 0;
             border: 1px solid #999;
-            border-bottom-width: 0;
+            min-width: 138px;
+            padding: 10px;
+            text-decoration: none;
+            z-index: 10;
+        }
+        div#map-info {
+            position: absolute;
+            bottom: 70px;
+            left: 10px;
+            font: normal 13px/18px 'Helvetica Neue', Helvetica, sans-serif;
+            background: #FFF;
+            color: #3C4E5A;
+            display: block;
+            margin: 0;
+            border: 1px solid #999;
             min-width: 138px;
             padding: 10px;
             text-decoration: none;
@@ -39,6 +53,14 @@
             <input type='checkbox' checked='checked' id='toggle-buildings'>
             <label for='toggle-buildings'>Show Buildings</label>
         </form>
+    </div>
+    <div id='map-info'>
+        <h1>What is this?</h1>
+        <p>This page shows a small map overlaying a rendering of the 
+           <a href="https://data.sfgov.org/">San Francisco Data</a> 
+           <a href="https://data.sfgov.org/Facilities-and-Structures/Building-Footprints-Zipped-Shapefile-Format-/jezr-5bxm">building footprint shapefile</a>
+           on a more readily accessible map.</p>
+        <p>For more information, see <a href="https://github.com/blech/sf-buildings">the project on GitHub</a>.</p>
     </div>
     <script>
         var map = L.mapbox.map('map', 'paulmison.map-9xcwu93y', {minZoom:13, maxZoom: 17})
